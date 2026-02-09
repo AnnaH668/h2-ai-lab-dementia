@@ -5,7 +5,7 @@ const BRAND_GREEN = "#9DA352";
 const BRAND_GREY = "#9A9A9A";
 
 // --- H2 LOGO COMPONENT ---
-const H2Logo = ({ className = "h-10" }: { className?: string }) => (
+const H2Logo = ({ className = "h-9" }: { className?: string }) => (
   <img
     src="/logo.png"
     alt="H2 AI LAB"
@@ -74,6 +74,30 @@ const ScrollIndicator = () => (
   </div>
 );
 
+// --- LOADING SCREEN ---
+const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
+  const [fadeOut, setFadeOut] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFadeOut(true);
+      setTimeout(onComplete, 600);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  return (
+    <div className={`loading-screen ${fadeOut ? 'fade-out' : ''}`}>
+      <div className="loading-logo">
+        <img src="/logo.png" alt="H2 AI LAB" className="h-16" />
+      </div>
+      <div className="loading-bar">
+        <div className="loading-bar-progress" />
+      </div>
+    </div>
+  );
+};
+
 // --- PRIVACY ICONS ---
 const PrivacyIcons = {
   local: () => (
@@ -99,6 +123,7 @@ const PrivacyIcons = {
 };
 
 const App: React.FC = () => {
+  const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -144,11 +169,13 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-slate-900 font-sans selection:bg-[#9DA352]/20">
+      {/* LOADING SCREEN */}
+      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
       {/* NAVIGATION */}
       <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-slate-100 py-4' : 'bg-transparent py-8'}`}>
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <H2Logo className="h-16" />
+            <H2Logo />
           </button>
           <div className="hidden lg:flex gap-12 font-bold uppercase text-[13px] tracking-[0.2em] text-slate-500">
             {['Problem', 'H2 System', 'Privacy', 'How It Works'].map(item => (
@@ -211,7 +238,7 @@ const App: React.FC = () => {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Cam Modules */}
             <div className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 transition-all card-hover">
-              <div className="h-48 mb-6 rounded-2xl overflow-hidden bg-white/5">
+              <div className="h-48 mb-6 rounded-2xl overflow-hidden product-image-wrapper">
                 <img src="/cam-modules.png" className="w-full h-full object-contain p-4" alt="Cam Modules" />
               </div>
               <h3 className="text-2xl font-bold mb-4 text-white">Cam Modules</h3>
@@ -219,7 +246,7 @@ const App: React.FC = () => {
             </div>
             {/* H2 Hub - Featured */}
             <div className="p-8 rounded-[2.5rem] bg-white/5 border-2 transition-all pulse-glow transform md:-translate-y-4" style={{ borderColor: BRAND_GREEN }}>
-              <div className="h-48 mb-6 rounded-2xl overflow-hidden bg-white/5">
+              <div className="h-48 mb-6 rounded-2xl overflow-hidden product-image-wrapper">
                 <img src="/H2-hub.png" className="w-full h-full object-contain p-4 float-animation" alt="H2 AI Hub" />
               </div>
               <h3 className="text-2xl font-bold mb-4" style={{ color: BRAND_GREEN }}>The H2 Hub</h3>
@@ -227,7 +254,7 @@ const App: React.FC = () => {
             </div>
             {/* Smart Tracker */}
             <div className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 transition-all card-hover">
-              <div className="h-48 mb-6 rounded-2xl overflow-hidden bg-white/5">
+              <div className="h-48 mb-6 rounded-2xl overflow-hidden product-image-wrapper">
                 <img src="/tracker.png" className="w-full h-full object-contain p-4" alt="Smart Tracker" />
               </div>
               <h3 className="text-2xl font-bold mb-4 text-white">Smart Tracker</h3>
@@ -338,7 +365,7 @@ const App: React.FC = () => {
       {/* FOOTER */}
       <footer className="py-20 text-center border-t border-slate-100">
         <div className="flex justify-center mb-8">
-          <H2Logo className="h-12" />
+          <H2Logo className="h-10" />
         </div>
         <p className="text-[10px] font-black text-slate-300 tracking-[0.5em] uppercase">© 2026 H2 AI LAB.</p>
       </footer>

@@ -277,3 +277,117 @@ h6 {
 .counter-number {
   font-variant-numeric: tabular-nums;
 }
+
+/* ============================================
+   LOADING SCREEN
+   ============================================ */
+
+@keyframes logoFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #FDFDFD 0%, #f0f4e8 50%, #FDFDFD 100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.loading-screen.fade-out {
+  animation: slideOut 0.6s ease forwards;
+}
+
+.loading-logo {
+  animation: logoFadeIn 0.8s ease, pulse 2s ease-in-out infinite;
+}
+
+.loading-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(157, 163, 82, 0.2);
+  border-radius: 3px;
+  margin-top: 40px;
+  overflow: hidden;
+}
+
+.loading-bar-progress {
+  height: 100%;
+  background: #9DA352;
+  border-radius: 3px;
+  animation: loadingProgress 1.5s ease forwards;
+}
+
+@keyframes loadingProgress {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   UNIFIED PRODUCT IMAGE STYLING
+   ============================================ */
+
+.product-image-wrapper {
+  background: linear-gradient(135deg, rgba(157, 163, 82, 0.08) 0%, rgba(255, 255, 255, 0.1) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 120%, rgba(157, 163, 82, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.product-image-wrapper img {
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.product-image-wrapper:hover img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.3));
+}
