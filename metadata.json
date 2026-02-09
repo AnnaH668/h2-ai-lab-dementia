@@ -1,0 +1,7 @@
+{
+  "name": "H2 AI LAB - Dementia Safety",
+  "description": "Proactive, privacy-first safety system designed for dementia wandering incidents, focusing on early warning and rapid response.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
